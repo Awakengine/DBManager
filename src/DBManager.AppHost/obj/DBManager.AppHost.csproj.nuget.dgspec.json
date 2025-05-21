@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/awakengine/Downloads/DBManager/src/DBManager.AppHost/DBManager.AppHost.csproj": {}
+    "/Users/awakengine/Downloads/DBManager-3/src/DBManager.AppHost/DBManager.AppHost.csproj": {}
   },
   "projects": {
-    "/Users/awakengine/Downloads/DBManager/src/DBManager.AppHost/DBManager.AppHost.csproj": {
+    "/Users/awakengine/Downloads/DBManager-3/src/DBManager.AppHost/DBManager.AppHost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/awakengine/Downloads/DBManager/src/DBManager.AppHost/DBManager.AppHost.csproj",
+        "projectUniqueName": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.AppHost/DBManager.AppHost.csproj",
         "projectName": "DBManager.AppHost",
-        "projectPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.AppHost/DBManager.AppHost.csproj",
+        "projectPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.AppHost/DBManager.AppHost.csproj",
         "packagesPath": "/Users/awakengine/.nuget/packages/",
-        "outputPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.AppHost/obj/",
+        "outputPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.AppHost/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/awakengine/.nuget/NuGet/NuGet.Config"
@@ -72,6 +72,14 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.2.1, )"
+            },
+            "ReactiveUI": {
+              "target": "Package",
+              "version": "[20.2.45, )"
+            },
+            "System.Reactive": {
+              "target": "Package",
+              "version": "[6.0.1, )"
             }
           },
           "imports": [

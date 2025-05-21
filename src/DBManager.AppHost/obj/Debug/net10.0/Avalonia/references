@@ -24,6 +24,7 @@
 /Users/awakengine/.nuget/packages/avalonia.win32/11.3.0/lib/net8.0/Avalonia.Win32.dll
 /Users/awakengine/.nuget/packages/avalonia.x11/11.3.0/lib/net8.0/Avalonia.X11.dll
 /Users/awakengine/.nuget/packages/communitytoolkit.mvvm/8.2.1/lib/net6.0/CommunityToolkit.Mvvm.dll
+/Users/awakengine/.nuget/packages/dynamicdata/9.1.2/lib/net8.0/DynamicData.dll
 /Users/awakengine/.nuget/packages/harfbuzzsharp/7.3.0.3/lib/net6.0/HarfBuzzSharp.dll
 /Users/awakengine/.nuget/packages/microcom.runtime/0.11.0/lib/net5.0/MicroCom.Runtime.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/Microsoft.CSharp.dll
@@ -33,7 +34,9 @@
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/Microsoft.Win32.Registry.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/mscorlib.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/netstandard.dll
+/Users/awakengine/.nuget/packages/reactiveui/20.2.45/lib/net9.0/ReactiveUI.dll
 /Users/awakengine/.nuget/packages/skiasharp/2.88.9/lib/net6.0/SkiaSharp.dll
+/Users/awakengine/.nuget/packages/splat/15.3.1/lib/net9.0/Splat.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.AppContext.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Buffers.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Collections.Concurrent.dll
@@ -117,6 +120,7 @@
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Numerics.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Numerics.Vectors.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.ObjectModel.dll
+/Users/awakengine/.nuget/packages/system.reactive/6.0.1/lib/net6.0/System.Reactive.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Reflection.DispatchProxy.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Reflection.dll
 /usr/local/share/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.0-preview.3.25171.5/ref/net10.0/System.Reflection.Emit.dll

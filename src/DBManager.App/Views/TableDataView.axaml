@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DBManager.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DBManager.App.Views.TableDataView"
+             x:DataType="vm:TableDataViewModel">
+
+    <Design.DataContext>
+        <vm:TableDataViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- 工具栏 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5">
+            <Button Command="{Binding RefreshCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="刷新" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <Button Command="{Binding FilterCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="筛选" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <Button Command="{Binding ExportCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="导出" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        
+        <!-- 数据表格 -->
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Rows}"
+                 SelectedItem="{Binding SelectedRow}"
+                 Background="White"
+                 Margin="5">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:DataRow">
+                    <Grid ColumnDefinitions="100,200,300,200">
+                        <TextBlock Grid.Column="0" Text="{Binding ID}" Margin="5"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="5"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Description}" Margin="5"/>
+                        <TextBlock Grid.Column="3" Text="{Binding CreatedAt}" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="编辑单元格" Command="{Binding $parent[UserControl].DataContext.EditCellCommand}"/>
+                    <MenuItem Header="复制" Command="{Binding $parent[UserControl].DataContext.CopyCommand}"/>
+                    <MenuItem Header="粘贴" Command="{Binding $parent[UserControl].DataContext.PasteCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="导出选中" Command="{Binding $parent[UserControl].DataContext.ExportSelectedCommand}"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        
+        <!-- 分页控件 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button Command="{Binding FirstPageCommand}" Content="首页" Margin="2"/>
+            <Button Command="{Binding PreviousPageCommand}" Content="上一页" Margin="2"/>
+            <TextBlock Text="{Binding PaginationInfo}" VerticalAlignment="Center" Margin="5"/>
+            <Button Command="{Binding NextPageCommand}" Content="下一页" Margin="2"/>
+            <Button Command="{Binding LastPageCommand}" Content="末页" Margin="2"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

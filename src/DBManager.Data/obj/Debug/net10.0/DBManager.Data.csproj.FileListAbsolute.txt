@@ -9,3 +9,4 @@
 /home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/refint/DBManager.Data.dll
 /home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.pdb
 /home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/ref/DBManager.Data.dll
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.sourcelink.json

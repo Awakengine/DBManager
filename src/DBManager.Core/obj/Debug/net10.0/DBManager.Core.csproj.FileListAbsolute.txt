@@ -9,3 +9,4 @@
 /home/ubuntu/DBManager/src/DBManager.Core/obj/Debug/net10.0/refint/DBManager.Core.dll
 /home/ubuntu/DBManager/src/DBManager.Core/obj/Debug/net10.0/DBManager.Core.pdb
 /home/ubuntu/DBManager/src/DBManager.Core/obj/Debug/net10.0/ref/DBManager.Core.dll
+/home/ubuntu/DBManager/src/DBManager.Core/obj/Debug/net10.0/DBManager.Core.sourcelink.json

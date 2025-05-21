@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/awakengine/Downloads/DBManager/src/DBManager.Core/DBManager.Core.csproj",
+      "projectUniqueName": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.Core/DBManager.Core.csproj",
       "projectName": "DBManager.Core",
-      "projectPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.Core/DBManager.Core.csproj",
+      "projectPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.Core/DBManager.Core.csproj",
       "packagesPath": "/Users/awakengine/.nuget/packages/",
-      "outputPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.Core/obj/",
+      "outputPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.Core/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/awakengine/.nuget/NuGet/NuGet.Config"

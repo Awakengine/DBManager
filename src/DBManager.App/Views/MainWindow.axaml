@@ -1,0 +1,207 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:DBManager.App.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="DBManager.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding Title}">
+
+    <Window.Styles>
+        <StyleInclude Source="/Styles/Themes.axaml" />
+        <StyleInclude Source="/Styles/ControlStyles.axaml" />
+    </Window.Styles>
+
+    <DockPanel>
+        <!-- 主菜单 -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="文件">
+                <MenuItem Header="新建连接" Command="{Binding NewConnectionCommand}" />
+                <MenuItem Header="连接" Command="{Binding ConnectCommand}" />
+                <MenuItem Header="断开连接" Command="{Binding DisconnectCommand}" />
+                <Separator />
+                <MenuItem Header="新建查询" Command="{Binding NewQueryCommand}" />
+                <MenuItem Header="保存" Command="{Binding SaveCommand}" />
+                <MenuItem Header="另存为" Command="{Binding SaveAsCommand}" />
+                <Separator />
+                <MenuItem Header="退出" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="编辑">
+                <MenuItem Header="撤销" Command="{Binding UndoCommand}" />
+                <MenuItem Header="重做" Command="{Binding RedoCommand}" />
+                <Separator />
+                <MenuItem Header="剪切" Command="{Binding CutCommand}" />
+                <MenuItem Header="复制" Command="{Binding CopyCommand}" />
+                <MenuItem Header="粘贴" Command="{Binding PasteCommand}" />
+            </MenuItem>
+            <MenuItem Header="视图">
+                <MenuItem Header="导航面板" Command="{Binding ToggleNavigationPanelCommand}" />
+                <MenuItem Header="状态栏" Command="{Binding ToggleStatusBarCommand}" />
+                <Separator />
+                <MenuItem Header="浅色主题" Command="{Binding SetLightThemeCommand}" />
+                <MenuItem Header="深色主题" Command="{Binding SetDarkThemeCommand}" />
+            </MenuItem>
+            <MenuItem Header="工具">
+                <MenuItem Header="选项" Command="{Binding ShowOptionsCommand}" />
+            </MenuItem>
+            <MenuItem Header="帮助">
+                <MenuItem Header="关于" Command="{Binding ShowAboutCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <!-- 工具栏 -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="5" Margin="5">
+            <Button Command="{Binding NewConnectionCommand}" ToolTip.Tip="新建连接">
+                <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Width="16" Height="16" />
+            </Button>
+            <Button Command="{Binding ConnectCommand}" ToolTip.Tip="连接">
+                <PathIcon Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" Width="16" Height="16" />
+            </Button>
+            <Button Command="{Binding DisconnectCommand}" ToolTip.Tip="断开连接">
+                <PathIcon Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" Width="16" Height="16" />
+            </Button>
+            <Separator />
+            <Button Command="{Binding NewQueryCommand}" ToolTip.Tip="新建查询">
+                <PathIcon Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" Width="16" Height="16" />
+            </Button>
+            <Button Command="{Binding SaveCommand}" ToolTip.Tip="保存">
+                <PathIcon Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" Width="16" Height="16" />
+            </Button>
+            <Separator />
+            <Button Command="{Binding ExecuteQueryCommand}" ToolTip.Tip="执行查询">
+                <PathIcon Data="M5,3L19,12L5,21V3Z" Width="16" Height="16" />
+            </Button>
+        </StackPanel>
+
+        <!-- 状态栏 -->
+        <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" Background="#F0F0F0" IsVisible="{Binding IsStatusBarVisible}">
+            <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Margin="5" />
+            <TextBlock Grid.Column="1" Text="{Binding ConnectionStatus}" Foreground="{Binding StatusColor}" Margin="5" />
+        </Grid>
+
+        <!-- 主内容区 -->
+        <Grid ColumnDefinitions="250,Auto,*">
+            <!-- 导航面板 -->
+            <Grid Grid.Column="0" IsVisible="{Binding IsSidebarVisible}" Background="#F5F5F5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- 搜索框 -->
+                <TextBox Grid.Row="0" Text="{Binding SearchText}" Watermark="搜索..." Margin="5" />
+
+                <!-- 连接树 -->
+                <TreeView Grid.Row="1" ItemsSource="{Binding Connections}" Margin="5" Background="Transparent">
+                    <TreeView.Styles>
+                        <Style Selector="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="True" />
+                        </Style>
+                    </TreeView.Styles>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="新建连接" Command="{Binding NewConnectionCommand}" />
+                            <MenuItem Header="刷新" Command="{Binding RefreshCommand}" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                    <TreeView.DataTemplates>
+                        <!-- 连接模板 -->
+                        <TreeDataTemplate DataType="vm:ConnectionViewModel" ItemsSource="{Binding Databases}">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" Width="16" Height="16" />
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" />
+                                <Ellipse Width="8" Height="8" Fill="{Binding StatusColor}" Margin="5,0,0,0" />
+                            </StackPanel>
+                            <TreeDataTemplate.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="连接" Command="{Binding $parent[Window].DataContext.ConnectCommand}" />
+                                    <MenuItem Header="断开连接" Command="{Binding $parent[Window].DataContext.DisconnectCommand}" />
+                                    <Separator />
+                                    <MenuItem Header="编辑连接" Command="{Binding $parent[Window].DataContext.EditConnectionCommand}" />
+                                    <MenuItem Header="删除连接" Command="{Binding $parent[Window].DataContext.DeleteConnectionCommand}" />
+                                </ContextMenu>
+                            </TreeDataTemplate.ContextMenu>
+                        </TreeDataTemplate>
+
+                        <!-- 数据库模板 -->
+                        <TreeDataTemplate DataType="vm:DatabaseViewModel" ItemsSource="{Binding ObjectGroups}">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="M12,3C7.58,3 4,4.79 4,7V17C4,19.21 7.59,21 12,21C16.41,21 20,19.21 20,17V7C20,4.79 16.42,3 12,3M12,5C16.08,5 18,6.34 18,7C18,7.66 16.08,9 12,9C7.92,9 6,7.66 6,7C6,6.34 7.92,5 12,5M18,17C18,17.66 16.08,19 12,19C7.92,19 6,17.66 6,17V14.77C7.61,15.55 9.72,16 12,16C14.28,16 16.39,15.55 18,14.77V17M18,12.45C16.7,13.4 14.42,14 12,14C9.58,14 7.3,13.4 6,12.45V9.64C7.47,10.47 9.61,11 12,11C14.39,11 16.53,10.47 18,9.64V12.45Z" Width="16" Height="16" />
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" />
+                            </StackPanel>
+                            <TreeDataTemplate.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="新建查询" Command="{Binding $parent[Window].DataContext.NewQueryCommand}" />
+                                    <MenuItem Header="刷新" Command="{Binding $parent[Window].DataContext.RefreshDatabaseCommand}" />
+                                </ContextMenu>
+                            </TreeDataTemplate.ContextMenu>
+                        </TreeDataTemplate>
+
+                        <!-- 对象组模板 -->
+                        <TreeDataTemplate DataType="vm:DatabaseObjectGroupViewModel" ItemsSource="{Binding Objects}">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="M3,4H21V8H3V4M3,10H21V14H3V10M3,16H21V20H3V16Z" Width="16" Height="16" />
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" />
+                            </StackPanel>
+                        </TreeDataTemplate>
+
+                        <!-- 数据库对象模板 -->
+                        <DataTemplate DataType="vm:DatabaseObjectViewModel">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" Width="16" Height="16" />
+                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" />
+                            </StackPanel>
+                            <DataTemplate.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="打开表" Command="{Binding $parent[Window].DataContext.OpenTableCommand}" CommandParameter="{Binding}" />
+                                    <MenuItem Header="设计表" Command="{Binding $parent[Window].DataContext.DesignTableCommand}" CommandParameter="{Binding}" />
+                                    <Separator />
+                                    <MenuItem Header="导出数据" Command="{Binding $parent[Window].DataContext.ExportDataCommand}" CommandParameter="{Binding}" />
+                                    <MenuItem Header="导入数据" Command="{Binding $parent[Window].DataContext.ImportDataCommand}" CommandParameter="{Binding}" />
+                                </ContextMenu>
+                            </DataTemplate.ContextMenu>
+                        </DataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Grid>
+
+            <!-- 分隔条 -->
+            <GridSplitter Grid.Column="1" Width="5" Background="#CCCCCC" 
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          IsVisible="{Binding IsSidebarVisible}" />
+
+            <!-- 标签页区域 -->
+            <TabControl Grid.Column="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+                <TabControl.Styles>
+                    <Style Selector="TabItem">
+                        <Setter Property="Padding" Value="10 5" />
+                        <Setter Property="MinWidth" Value="100" />
+                        <Setter Property="Background" Value="#F0F0F0" />
+                    </Style>
+                    <Style Selector="TabItem:selected">
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                </TabControl.Styles>
+                <TabControl.ItemTemplate>
+                    <DataTemplate DataType="vm:TabItemViewModel">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="{Binding Header}" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Command="{Binding $parent[Window].DataContext.CloseTabCommand}" 
+                                    CommandParameter="{Binding}" IsVisible="{Binding CanClose}"
+                                    Padding="2" Margin="5 0 0 0" Background="Transparent">
+                                <PathIcon Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Width="12" Height="12" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="vm:TabItemViewModel">
+                        <ContentControl Content="{Binding Content}" />
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/DBManager.MCP.csproj": {}
+    "/Users/awakengine/Downloads/DBManager-3/src/DBManager.MCP/DBManager.MCP.csproj": {}
   },
   "projects": {
-    "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/DBManager.MCP.csproj": {
+    "/Users/awakengine/Downloads/DBManager-3/src/DBManager.MCP/DBManager.MCP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/DBManager.MCP.csproj",
+        "projectUniqueName": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.MCP/DBManager.MCP.csproj",
         "projectName": "DBManager.MCP",
-        "projectPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/DBManager.MCP.csproj",
+        "projectPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.MCP/DBManager.MCP.csproj",
         "packagesPath": "/Users/awakengine/.nuget/packages/",
-        "outputPath": "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/obj/",
+        "outputPath": "/Users/awakengine/Downloads/DBManager-3/src/DBManager.MCP/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/awakengine/.nuget/NuGet/NuGet.Config"

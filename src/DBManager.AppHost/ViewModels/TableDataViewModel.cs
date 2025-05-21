@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -6,31 +7,17 @@ namespace DBManager.App.ViewModels
 {
     public class TableDataViewModel : ViewModelBase
     {
-        // 字段
-        private ObservableCollection<DataRow> _rows = new();
-        private ObservableCollection<DataColumn> _columns = new();
         private string _tableName = string.Empty;
-        private string _paginationInfo = string.Empty;
-        private bool _isLoading;
-        private int _currentPage = 1;
-        private int _pageSize = 50;
-        private int _totalPages = 1;
-        private int _totalRows = 0;
-        private DataRow? _selectedRow;
+        private string _schema = string.Empty;
+        private ObservableCollection<ColumnInfo> _columns = new();
+        private ObservableCollection<RowData> _rows = new();
         private string _filterText = string.Empty;
-        
-        // 属性
-        public ObservableCollection<DataRow> Rows
-        {
-            get => _rows;
-            set => SetProperty(ref _rows, value);
-        }
-        
-        public ObservableCollection<DataColumn> Columns
-        {
-            get => _columns;
-            set => SetProperty(ref _columns, value);
-        }
+        private bool _isLoading;
+        private string _statusMessage = string.Empty;
+        private int _totalRows;
+        private int _displayedRows;
+        private int _selectedRows;
+        private RowData? _selectedRow;
         
         public string TableName
         {
@@ -38,10 +25,44 @@ namespace DBManager.App.ViewModels
             set => SetProperty(ref _tableName, value);
         }
         
-        public string PaginationInfo
+        public string Schema
         {
-            get => _paginationInfo;
-            set => SetProperty(ref _paginationInfo, value);
+            get => _schema;
+            set => SetProperty(ref _schema, value);
+        }
+        
+        public ObservableCollection<ColumnInfo> Columns
+        {
+            get => _columns;
+            set => SetProperty(ref _columns, value);
+        }
+        
+        public ObservableCollection<RowData> Rows
+        {
+            get => _rows;
+            set => SetProperty(ref _rows, value);
+        }
+        
+        public RowData? SelectedRow
+        {
+            get => _selectedRow;
+            set 
+            {
+                if (SetProperty(ref _selectedRow, value))
+                {
+                    SelectedRows = value != null ? 1 : 0;
+                    OnPropertyChanged(nameof(SelectedRows));
+                    OnPropertyChanged(nameof(HasSelectedRow));
+                }
+            }
+        }
+        
+        public bool HasSelectedRow => SelectedRow != null;
+        
+        public string FilterText
+        {
+            get => _filterText;
+            set => SetProperty(ref _filterText, value);
         }
         
         public bool IsLoading
@@ -50,304 +71,240 @@ namespace DBManager.App.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
         
-        public int CurrentPage
+        public string StatusMessage
         {
-            get => _currentPage;
-            set
-            {
-                if (SetProperty(ref _currentPage, value))
-                {
-                    UpdatePaginationInfo();
-                    LoadData();
-                }
-            }
-        }
-        
-        public int PageSize
-        {
-            get => _pageSize;
-            set
-            {
-                if (SetProperty(ref _pageSize, value))
-                {
-                    UpdatePaginationInfo();
-                    LoadData();
-                }
-            }
-        }
-        
-        public int TotalPages
-        {
-            get => _totalPages;
-            set => SetProperty(ref _totalPages, value);
+            get => _statusMessage;
+            set => SetProperty(ref _statusMessage, value);
         }
         
         public int TotalRows
         {
             get => _totalRows;
-            set
-            {
-                if (SetProperty(ref _totalRows, value))
-                {
-                    TotalPages = (int)Math.Ceiling((double)_totalRows / PageSize);
-                    UpdatePaginationInfo();
-                }
-            }
+            set => SetProperty(ref _totalRows, value);
         }
         
-        public DataRow? SelectedRow
+        public int DisplayedRows
         {
-            get => _selectedRow;
-            set => SetProperty(ref _selectedRow, value);
+            get => _displayedRows;
+            set => SetProperty(ref _displayedRows, value);
         }
         
-        public string FilterText
+        public int SelectedRows
         {
-            get => _filterText;
-            set => SetProperty(ref _filterText, value);
+            get => _selectedRows;
+            set => SetProperty(ref _selectedRows, value);
         }
         
         // 命令
         public ICommand RefreshCommand { get; }
-        public ICommand FirstPageCommand { get; }
-        public ICommand PreviousPageCommand { get; }
-        public ICommand NextPageCommand { get; }
-        public ICommand LastPageCommand { get; }
-        public ICommand EditRowCommand { get; }
-        public ICommand DeleteRowCommand { get; }
-        public ICommand AddRowCommand { get; }
         public ICommand FilterCommand { get; }
         public ICommand ExportCommand { get; }
-        public ICommand EditCellCommand { get; }
-        public ICommand CopyCommand { get; }
-        public ICommand PasteCommand { get; }
-        public ICommand ExportSelectedCommand { get; }
+        public ICommand AddRowCommand { get; }
+        public ICommand DeleteRowCommand { get; }
+        public ICommand SaveChangesCommand { get; }
+        public ICommand DiscardChangesCommand { get; }
         
         public TableDataViewModel()
         {
             // 初始化命令
-            RefreshCommand = new RelayCommand(LoadData);
-            FirstPageCommand = new RelayCommand(GoToFirstPage, CanGoToFirstPage);
-            PreviousPageCommand = new RelayCommand(GoToPreviousPage, CanGoToPreviousPage);
-            NextPageCommand = new RelayCommand(GoToNextPage, CanGoToNextPage);
-            LastPageCommand = new RelayCommand(GoToLastPage, CanGoToLastPage);
-            EditRowCommand = new RelayCommand(EditRow, CanEditRow);
-            DeleteRowCommand = new RelayCommand(DeleteRow, CanDeleteRow);
+            RefreshCommand = new RelayCommand(Refresh);
+            FilterCommand = new RelayCommand(Filter);
+            ExportCommand = new RelayCommand(Export);
             AddRowCommand = new RelayCommand(AddRow);
-            FilterCommand = new RelayCommand(ApplyFilter);
-            ExportCommand = new RelayCommand(ExportData);
-            EditCellCommand = new RelayCommand(EditCell);
-            CopyCommand = new RelayCommand(CopyData, CanCopyData);
-            PasteCommand = new RelayCommand(PasteData, CanPasteData);
-            ExportSelectedCommand = new RelayCommand(ExportSelected, CanExportSelected);
+            DeleteRowCommand = new RelayCommand(DeleteRow, () => HasSelectedRow);
+            SaveChangesCommand = new RelayCommand(SaveChanges);
+            DiscardChangesCommand = new RelayCommand(DiscardChanges);
             
-            // 初始化数据
-            InitializeColumns();
-            LoadData();
+            // 初始化示例数据
+            InitializeSampleData();
         }
         
-        private void InitializeColumns()
+        private void InitializeSampleData()
         {
             // 添加示例列
-            Columns.Add(new DataColumn { Name = "ID", Type = "int", IsPrimaryKey = true });
-            Columns.Add(new DataColumn { Name = "Name", Type = "varchar(50)" });
-            Columns.Add(new DataColumn { Name = "Description", Type = "text" });
-            Columns.Add(new DataColumn { Name = "CreatedAt", Type = "datetime" });
-        }
-        
-        private void LoadData()
-        {
-            IsLoading = true;
+            Columns.Add(new ColumnInfo { Name = "id", Type = "INT", IsPrimaryKey = true });
+            Columns.Add(new ColumnInfo { Name = "name", Type = "VARCHAR(100)" });
+            Columns.Add(new ColumnInfo { Name = "email", Type = "VARCHAR(100)" });
+            Columns.Add(new ColumnInfo { Name = "age", Type = "INT" });
+            Columns.Add(new ColumnInfo { Name = "created_at", Type = "DATETIME" });
             
-            // 清空现有数据
-            Rows.Clear();
-            
-            // 模拟加载数据
-            // 实际应用中应该从数据库加载数据
+            // 添加示例行
             for (int i = 1; i <= 10; i++)
             {
-                int id = (CurrentPage - 1) * PageSize + i;
-                Rows.Add(new DataRow
-                {
-                    ID = id,
-                    Name = $"Item {id}",
-                    Description = $"Description for item {id}",
-                    CreatedAt = DateTime.Now.AddDays(-id)
-                });
+                var row = new RowData();
+                row.Values.Add("id", i);
+                row.Values.Add("name", $"User {i}");
+                row.Values.Add("email", $"user{i}@example.com");
+                row.Values.Add("age", 20 + i);
+                row.Values.Add("created_at", DateTime.Now.AddDays(-i));
+                
+                Rows.Add(row);
             }
             
-            // 更新总行数
-            TotalRows = 100; // 模拟总共有100行数据
+            TotalRows = 10;
+            DisplayedRows = 10;
+            SelectedRows = 0;
+            StatusMessage = "就绪";
+        }
+        
+        private void Refresh()
+        {
+            IsLoading = true;
+            StatusMessage = "正在刷新数据...";
+            
+            // 模拟刷新过程
+            // 实际应用中应该异步加载数据
             
             IsLoading = false;
+            StatusMessage = "数据已刷新";
         }
         
-        private void UpdatePaginationInfo()
+        private void Filter()
         {
-            int start = (CurrentPage - 1) * PageSize + 1;
-            int end = Math.Min(CurrentPage * PageSize, TotalRows);
-            PaginationInfo = $"显示 {start}-{end} 共 {TotalRows} 行";
-        }
-        
-        private void GoToFirstPage()
-        {
-            CurrentPage = 1;
-        }
-        
-        private bool CanGoToFirstPage()
-        {
-            return CurrentPage > 1;
-        }
-        
-        private void GoToPreviousPage()
-        {
-            if (CurrentPage > 1)
+            if (string.IsNullOrWhiteSpace(FilterText))
             {
-                CurrentPage--;
+                StatusMessage = "请输入筛选条件";
+                return;
             }
+            
+            IsLoading = true;
+            StatusMessage = $"正在筛选数据: {FilterText}";
+            
+            // 模拟筛选过程
+            // 实际应用中应该根据FilterText筛选数据
+            
+            IsLoading = false;
+            StatusMessage = $"已应用筛选条件: {FilterText}";
         }
         
-        private bool CanGoToPreviousPage()
+        private void Export()
         {
-            return CurrentPage > 1;
-        }
-        
-        private void GoToNextPage()
-        {
-            if (CurrentPage < TotalPages)
-            {
-                CurrentPage++;
-            }
-        }
-        
-        private bool CanGoToNextPage()
-        {
-            return CurrentPage < TotalPages;
-        }
-        
-        private void GoToLastPage()
-        {
-            CurrentPage = TotalPages;
-        }
-        
-        private bool CanGoToLastPage()
-        {
-            return CurrentPage < TotalPages;
-        }
-        
-        private void EditRow()
-        {
-            // 编辑选中的行
-            // 实际应用中应该打开编辑对话框
-        }
-        
-        private bool CanEditRow()
-        {
-            return SelectedRow != null;
-        }
-        
-        private void DeleteRow()
-        {
-            // 删除选中的行
-            // 实际应用中应该弹出确认对话框
-            if (SelectedRow != null)
-            {
-                Rows.Remove(SelectedRow);
-                TotalRows--;
-            }
-        }
-        
-        private bool CanDeleteRow()
-        {
-            return SelectedRow != null;
+            StatusMessage = "正在导出数据...";
+            
+            // 模拟导出过程
+            // 实际应用中应该打开导出对话框
+            
+            StatusMessage = "数据已导出";
         }
         
         private void AddRow()
         {
-            // 添加新行
-            // 实际应用中应该打开添加对话框
-            var newRow = new DataRow
+            var row = new RowData();
+            foreach (var column in Columns)
             {
-                ID = TotalRows + 1,
-                Name = "New Item",
-                Description = "New item description",
-                CreatedAt = DateTime.Now
-            };
+                row.Values.Add(column.Name, null);
+            }
             
-            Rows.Add(newRow);
-            TotalRows++;
-            SelectedRow = newRow;
+            Rows.Add(row);
+            DisplayedRows = Rows.Count;
+            StatusMessage = "已添加新行";
         }
         
-        private void ApplyFilter()
+        private void DeleteRow()
         {
-            // 应用筛选
-            // 实际应用中应该根据FilterText筛选数据
-            LoadData();
+            if (SelectedRow == null)
+            {
+                StatusMessage = "请先选择要删除的行";
+                return;
+            }
+            
+            Rows.Remove(SelectedRow);
+            DisplayedRows = Rows.Count;
+            StatusMessage = "已删除选中行";
         }
         
-        private void ExportData()
+        private void SaveChanges()
         {
-            // 导出数据
-            // 实际应用中应该导出数据到文件
+            StatusMessage = "正在保存更改...";
+            
+            // 模拟保存过程
+            // 实际应用中应该保存更改到数据库
+            
+            StatusMessage = "更改已保存";
         }
         
-        private void EditCell()
+        private void DiscardChanges()
         {
-            // 编辑单元格
-            // 实际应用中应该打开单元格编辑器
-        }
-        
-        private void CopyData()
-        {
-            // 复制数据
-            // 实际应用中应该复制数据到剪贴板
-        }
-        
-        private bool CanCopyData()
-        {
-            return SelectedRow != null;
-        }
-        
-        private void PasteData()
-        {
-            // 粘贴数据
-            // 实际应用中应该从剪贴板粘贴数据
-        }
-        
-        private bool CanPasteData()
-        {
-            // 检查剪贴板是否有可粘贴的数据
-            return true;
-        }
-        
-        private void ExportSelected()
-        {
-            // 导出选中的数据
-            // 实际应用中应该导出选中的数据到文件
-        }
-        
-        private bool CanExportSelected()
-        {
-            return SelectedRow != null;
+            StatusMessage = "正在撤销更改...";
+            
+            // 模拟撤销过程
+            // 实际应用中应该撤销未保存的更改
+            
+            StatusMessage = "更改已撤销";
         }
     }
     
-    // 数据列
-    public class DataColumn
+    public class ColumnInfo : ViewModelBase
     {
-        public string Name { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
-        public bool IsPrimaryKey { get; set; }
-        public bool IsNullable { get; set; } = true;
+        private string _name = string.Empty;
+        private string _type = string.Empty;
+        private bool _isPrimaryKey;
+        private bool _isNullable = true;
+        private string _defaultValue = string.Empty;
+        private string _comment = string.Empty;
+        
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+        
+        public string Type
+        {
+            get => _type;
+            set => SetProperty(ref _type, value);
+        }
+        
+        public bool IsPrimaryKey
+        {
+            get => _isPrimaryKey;
+            set => SetProperty(ref _isPrimaryKey, value);
+        }
+        
+        public bool IsNullable
+        {
+            get => _isNullable;
+            set => SetProperty(ref _isNullable, value);
+        }
+        
+        public string DefaultValue
+        {
+            get => _defaultValue;
+            set => SetProperty(ref _defaultValue, value);
+        }
+        
+        public string Comment
+        {
+            get => _comment;
+            set => SetProperty(ref _comment, value);
+        }
     }
     
-    // 数据行
-    public class DataRow
+    public class RowData : ViewModelBase
     {
-        public int ID { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
+        private Dictionary<string, object?> _values = new();
+        
+        public Dictionary<string, object?> Values
+        {
+            get => _values;
+            set => SetProperty(ref _values, value);
+        }
+        
+        public object? this[string columnName]
+        {
+            get => Values.TryGetValue(columnName, out var value) ? value : null;
+            set
+            {
+                if (Values.ContainsKey(columnName))
+                {
+                    Values[columnName] = value;
+                }
+                else
+                {
+                    Values.Add(columnName, value);
+                }
+                OnPropertyChanged($"Item[{columnName}]");
+            }
+        }
     }
 }

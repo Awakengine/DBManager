@@ -6,67 +6,59 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DBManager.App.Views.TableDataView"
              x:DataType="vm:TableDataViewModel">
-
-    <Design.DataContext>
-        <vm:TableDataViewModel/>
-    </Design.DataContext>
-
-    <Grid RowDefinitions="Auto,*,Auto">
-        <!-- 工具栏 -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="5" Margin="5">
-            <Button Command="{Binding RefreshCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="刷新" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-            
-            <Button Command="{Binding FilterCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="筛选" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-            
-            <Button Command="{Binding ExportCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="导出" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
-        
-        <!-- 数据表格 -->
-        <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding Rows}"
-                 SelectedItem="{Binding SelectedRow}"
-                 Background="White"
-                 Margin="5">
-            <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="vm:DataRow">
-                    <Grid ColumnDefinitions="100,200,300,200">
-                        <TextBlock Grid.Column="0" Text="{Binding ID}" Margin="5"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="5"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Description}" Margin="5"/>
-                        <TextBlock Grid.Column="3" Text="{Binding CreatedAt}" Margin="5"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="编辑单元格" Command="{Binding $parent[UserControl].DataContext.EditCellCommand}"/>
-                    <MenuItem Header="复制" Command="{Binding $parent[UserControl].DataContext.CopyCommand}"/>
-                    <MenuItem Header="粘贴" Command="{Binding $parent[UserControl].DataContext.PasteCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="导出选中" Command="{Binding $parent[UserControl].DataContext.ExportSelectedCommand}"/>
-                </ContextMenu>
-            </ListBox.ContextMenu>
-        </ListBox>
-        
-        <!-- 分页控件 -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button Command="{Binding FirstPageCommand}" Content="首页" Margin="2"/>
-            <Button Command="{Binding PreviousPageCommand}" Content="上一页" Margin="2"/>
-            <TextBlock Text="{Binding PaginationInfo}" VerticalAlignment="Center" Margin="5"/>
-            <Button Command="{Binding NextPageCommand}" Content="下一页" Margin="2"/>
-            <Button Command="{Binding LastPageCommand}" Content="末页" Margin="2"/>
-        </StackPanel>
+  <DockPanel>
+    <!-- 工具栏 -->
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="5" Margin="5">
+      <Button Command="{Binding RefreshCommand}" ToolTip.Tip="刷新">
+        <PathIcon Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" Width="16" Height="16" />
+      </Button>
+      <Separator />
+      <TextBox Text="{Binding FilterText}" Watermark="筛选..." Width="200" />
+      <Button Command="{Binding FilterCommand}" ToolTip.Tip="应用筛选">
+        <PathIcon Data="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3H19C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" Width="16" Height="16" />
+      </Button>
+      <Separator />
+      <Button Command="{Binding ExportCommand}" ToolTip.Tip="导出">
+        <PathIcon Data="M23,12L19,8V11H10V13H19V16M1,18V6C1,4.89 1.9,4 3,4H15A2,2 0 0,1 17,6V9H15V6H3V18H15V15H17V18A2,2 0 0,1 15,20H3A2,2 0 0,1 1,18Z" Width="16" Height="16" />
+      </Button>
+      <Separator />
+      <Button Command="{Binding AddRowCommand}" ToolTip.Tip="添加行">
+        <PathIcon Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Width="16" Height="16" />
+      </Button>
+      <Button Command="{Binding DeleteRowCommand}" ToolTip.Tip="删除行">
+        <PathIcon Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" Width="16" Height="16" />
+      </Button>
+      <Separator />
+      <Button Command="{Binding SaveChangesCommand}" ToolTip.Tip="保存更改">
+        <PathIcon Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" Width="16" Height="16" />
+      </Button>
+      <Button Command="{Binding DiscardChangesCommand}" ToolTip.Tip="撤销更改">
+        <PathIcon Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Width="16" Height="16" />
+      </Button>
+    </StackPanel>
+    
+    <!-- 状态栏 -->
+    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto,Auto" Background="#F0F0F0">
+      <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Margin="5" />
+      <TextBlock Grid.Column="1" Text="{Binding TotalRows, StringFormat=总行数: {0}}" Margin="5" />
+      <TextBlock Grid.Column="2" Text="{Binding DisplayedRows, StringFormat=显示行数: {0}}" Margin="5" />
+      <TextBlock Grid.Column="3" Text="{Binding SelectedRows, StringFormat=选中行数: {0}}" Margin="5" />
     </Grid>
+    
+    <!-- 数据表格 -->
+    <DataGrid ItemsSource="{Binding Rows}" 
+              SelectedItem="{Binding SelectedRow}"
+              AutoGenerateColumns="False" 
+              IsReadOnly="False" 
+              CanUserSortColumns="True" 
+              CanUserResizeColumns="True">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="ID" Binding="{Binding Values[id]}" IsReadOnly="True" />
+        <DataGridTextColumn Header="姓名" Binding="{Binding Values[name]}" />
+        <DataGridTextColumn Header="邮箱" Binding="{Binding Values[email]}" />
+        <DataGridTextColumn Header="年龄" Binding="{Binding Values[age]}" />
+        <DataGridTextColumn Header="创建时间" Binding="{Binding Values[created_at]}" />
+      </DataGrid.Columns>
+    </DataGrid>
+  </DockPanel>
 </UserControl>

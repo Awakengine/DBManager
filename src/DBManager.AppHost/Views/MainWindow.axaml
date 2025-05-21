@@ -82,9 +82,9 @@
         </Grid>
 
         <!-- 主内容区 -->
-        <Grid ColumnDefinitions="Auto,*">
+        <Grid ColumnDefinitions="250,Auto,*">
             <!-- 导航面板 -->
-            <Grid Grid.Column="0" Width="{Binding SidebarWidth}" IsVisible="{Binding IsSidebarVisible}">
+            <Grid Grid.Column="0" IsVisible="{Binding IsSidebarVisible}" Background="#F5F5F5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -94,7 +94,18 @@
                 <TextBox Grid.Row="0" Text="{Binding SearchText}" Watermark="搜索..." Margin="5" />
 
                 <!-- 连接树 -->
-                <TreeView Grid.Row="1" ItemsSource="{Binding Connections}" Margin="5">
+                <TreeView Grid.Row="1" ItemsSource="{Binding Connections}" Margin="5" Background="Transparent">
+                    <TreeView.Styles>
+                        <Style Selector="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="True" />
+                        </Style>
+                    </TreeView.Styles>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="新建连接" Command="{Binding NewConnectionCommand}" />
+                            <MenuItem Header="刷新" Command="{Binding RefreshCommand}" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
                     <TreeView.DataTemplates>
                         <!-- 连接模板 -->
                         <TreeDataTemplate DataType="vm:ConnectionViewModel" ItemsSource="{Binding Databases}">
@@ -132,13 +143,30 @@
                 </TreeView>
             </Grid>
 
+            <!-- 分隔条 -->
+            <GridSplitter Grid.Column="1" Width="5" Background="#CCCCCC" 
+                          HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          IsVisible="{Binding IsSidebarVisible}" />
+
             <!-- 标签页区域 -->
-            <TabControl Grid.Column="1" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+            <TabControl Grid.Column="2" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+                <TabControl.Styles>
+                    <Style Selector="TabItem">
+                        <Setter Property="Padding" Value="10 5" />
+                        <Setter Property="MinWidth" Value="100" />
+                        <Setter Property="Background" Value="#F0F0F0" />
+                    </Style>
+                    <Style Selector="TabItem:selected">
+                        <Setter Property="Background" Value="White" />
+                    </Style>
+                </TabControl.Styles>
                 <TabControl.ItemTemplate>
                     <DataTemplate DataType="vm:TabItemViewModel">
                         <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Grid.Column="0" Text="{Binding Header}" />
-                            <Button Grid.Column="1" Command="{Binding $parent[Window].DataContext.CloseTabCommand}" CommandParameter="{Binding}" IsVisible="{Binding CanClose}">
+                            <TextBlock Grid.Column="0" Text="{Binding Header}" VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Command="{Binding $parent[Window].DataContext.CloseTabCommand}" 
+                                    CommandParameter="{Binding}" IsVisible="{Binding CanClose}"
+                                    Padding="2" Margin="5 0 0 0" Background="Transparent">
                                 <PathIcon Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Width="12" Height="12" />
                             </Button>
                         </Grid>
