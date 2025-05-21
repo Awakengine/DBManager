@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "LQiG4QzfVP0=",
+  "success": true,
+  "projectFilePath": "/Users/awakengine/Downloads/DBManager/src/DBManager.MCP/DBManager.MCP.csproj",
+  "expectedPackageFiles": [
+    "/Users/awakengine/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.5/microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}

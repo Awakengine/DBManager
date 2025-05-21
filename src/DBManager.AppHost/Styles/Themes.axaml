@@ -1,0 +1,14 @@
+<Style xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- 浅色主题 -->
+  <Style Selector=":is(Window).LightTheme">
+    <Setter Property="Background" Value="White"/>
+    <Setter Property="Foreground" Value="Black"/>
+  </Style>
+  
+  <!-- 深色主题 -->
+  <Style Selector=":is(Window).DarkTheme">
+    <Setter Property="Background" Value="#252525"/>
+    <Setter Property="Foreground" Value="White"/>
+  </Style>
+</Style>

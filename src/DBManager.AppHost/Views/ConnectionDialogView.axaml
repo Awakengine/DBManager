@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DBManager.App.ViewModels"
+             x:Class="DBManager.App.Views.ConnectionDialogView"
+             x:DataType="vm:ConnectionDialogViewModel"
+             Width="500" Height="400">
+    
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- 标签页标题 -->
+        <TabControl Grid.Row="0" TabStripPlacement="Top" Margin="0">
+            <TabItem Header="常规" IsSelected="True"/>
+            <TabItem Header="SSL"/>
+            <TabItem Header="SSH"/>
+            <TabItem Header="高级"/>
+        </TabControl>
+        
+        <!-- 表单内容 -->
+        <Grid Grid.Row="1" Margin="20" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="连接名称:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ConnectionName}" Margin="0,0,0,10"/>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="主机:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Host}"/>
+                <TextBlock Grid.Column="1" Text="端口:" VerticalAlignment="Center" Margin="10,0"/>
+                <TextBox Grid.Column="2" Text="{Binding Port}"/>
+            </Grid>
+            
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="用户名:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Username}" Margin="0,0,0,10"/>
+            
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="密码:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <Grid Grid.Row="3" Grid.Column="1" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Password}" PasswordChar="*"/>
+                <CheckBox Grid.Column="1" Content="保存密码" IsChecked="{Binding SavePassword}" Margin="10,0,0,0"/>
+            </Grid>
+            
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="数据库:" VerticalAlignment="Center" Margin="0,0,10,10"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Database}" Margin="0,0,0,10"/>
+        </Grid>
+        
+        <!-- 按钮区域 -->
+        <Grid Grid.Row="2" Margin="20,0,20,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="测试连接" Command="{Binding TestConnectionCommand}" Margin="0,0,10,0" Padding="10,5"/>
+            <Button Grid.Column="2" Content="取消" Command="{Binding CancelCommand}" Margin="0,0,10,0" Padding="10,5"/>
+            <Button Grid.Column="3" Content="确定" Command="{Binding SaveCommand}" Padding="10,5"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,12 @@
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.GeneratedMSBuildEditorConfig.editorconfig
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.AssemblyInfoInputs.cache
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.AssemblyInfo.cs
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.csproj.CoreCompileInputs.cache
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.csproj.AssemblyReference.cache
+/home/ubuntu/DBManager/src/DBManager.MCP/bin/Debug/net10.0/DBManager.MCP.deps.json
+/home/ubuntu/DBManager/src/DBManager.MCP/bin/Debug/net10.0/DBManager.MCP.dll
+/home/ubuntu/DBManager/src/DBManager.MCP/bin/Debug/net10.0/DBManager.MCP.pdb
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.dll
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/refint/DBManager.MCP.dll
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/DBManager.MCP.pdb
+/home/ubuntu/DBManager/src/DBManager.MCP/obj/Debug/net10.0/ref/DBManager.MCP.dll

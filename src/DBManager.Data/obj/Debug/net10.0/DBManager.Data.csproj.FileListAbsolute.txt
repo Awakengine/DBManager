@@ -1,0 +1,11 @@
+/home/ubuntu/DBManager/src/DBManager.Data/bin/Debug/net10.0/DBManager.Data.deps.json
+/home/ubuntu/DBManager/src/DBManager.Data/bin/Debug/net10.0/DBManager.Data.dll
+/home/ubuntu/DBManager/src/DBManager.Data/bin/Debug/net10.0/DBManager.Data.pdb
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.GeneratedMSBuildEditorConfig.editorconfig
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.AssemblyInfoInputs.cache
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.AssemblyInfo.cs
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.csproj.CoreCompileInputs.cache
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.dll
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/refint/DBManager.Data.dll
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/DBManager.Data.pdb
+/home/ubuntu/DBManager/src/DBManager.Data/obj/Debug/net10.0/ref/DBManager.Data.dll

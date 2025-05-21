@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DBManager.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DBManager.App.Views.QueryEditorView"
+             x:DataType="vm:QueryEditorViewModel">
+  
+  <Grid RowDefinitions="Auto,*,Auto">
+    <!-- 工具栏 -->
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5" Spacing="5">
+      <Button Command="{Binding ExecuteQueryCommand}" ToolTip.Tip="执行查询">
+        <StackPanel Orientation="Horizontal">
+          <PathIcon Data="M5,3L19,12L5,21V3Z" Width="16" Height="16" />
+          <TextBlock Text="执行" Margin="5,0,0,0" />
+        </StackPanel>
+      </Button>
+      
+      <Button Command="{Binding StopQueryCommand}" ToolTip.Tip="停止查询">
+        <StackPanel Orientation="Horizontal">
+          <PathIcon Data="M6,6H18V18H6V6Z" Width="16" Height="16" />
+          <TextBlock Text="停止" Margin="5,0,0,0" />
+        </StackPanel>
+      </Button>
+      
+      <Separator />
+      
+      <Button Command="{Binding FormatQueryCommand}" ToolTip.Tip="格式化SQL">
+        <StackPanel Orientation="Horizontal">
+          <PathIcon Data="M3,3H21V5H3V3M3,7H15V9H3V7M3,11H21V13H3V11M3,15H15V17H3V15M3,19H21V21H3V19Z" Width="16" Height="16" />
+          <TextBlock Text="格式化" Margin="5,0,0,0" />
+        </StackPanel>
+      </Button>
+      
+      <Button Command="{Binding SaveQueryCommand}" ToolTip.Tip="保存查询">
+        <StackPanel Orientation="Horizontal">
+          <PathIcon Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" Width="16" Height="16" />
+          <TextBlock Text="保存" Margin="5,0,0,0" />
+        </StackPanel>
+      </Button>
+    </StackPanel>
+    
+    <!-- 查询编辑器和结果区域 -->
+    <Grid Grid.Row="1" RowDefinitions="*,5,*">
+      <!-- 查询编辑器 -->
+      <TextBox Grid.Row="0" Text="{Binding QueryText}" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas,Menlo,Monospace" />
+      
+      <!-- 分隔条 -->
+      <GridSplitter Grid.Row="1" Background="#CCCCCC" HorizontalAlignment="Stretch" />
+      
+      <!-- 查询结果 -->
+      <TabControl Grid.Row="2" ItemsSource="{Binding Results}" SelectedItem="{Binding SelectedResult}">
+        <TabControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:QueryResultViewModel">
+            <TextBlock Text="{Binding Title}" />
+          </DataTemplate>
+        </TabControl.ItemTemplate>
+        
+        <TabControl.ContentTemplate>
+          <DataTemplate x:DataType="vm:QueryResultViewModel">
+            <Grid RowDefinitions="*,Auto">
+              <!-- 结果数据网格 -->
+              <DataGrid Grid.Row="0" ItemsSource="{Binding Rows}" IsReadOnly="True" AutoGenerateColumns="True" />
+              
+              <!-- 结果状态栏 -->
+              <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+                <TextBlock Text="行数: " />
+                <TextBlock Text="{Binding RowCount}" Margin="5,0,15,0" />
+                <TextBlock Text="执行时间: " />
+                <TextBlock Text="{Binding ExecutionTime}" Margin="5,0,0,0" />
+              </StackPanel>
+            </Grid>
+          </DataTemplate>
+        </TabControl.ContentTemplate>
+      </TabControl>
+    </Grid>
+    
+    <!-- 状态栏 -->
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
+      <TextBlock Text="{Binding StatusMessage}" />
+    </StackPanel>
+  </Grid>
+</UserControl>
